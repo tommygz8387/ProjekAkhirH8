@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class LoginController extends Controller
 {
@@ -51,13 +52,15 @@ class LoginController extends Controller
         if(auth()->attempt(array('email' => $input['email'], 'password' => $input['password'])))
         {
             if (auth()->user()->is_admin == 1) {
+                Alert::success('Success', 'Anda Berhasil Login');
                 return redirect()->route('admin.home');
             }else{
+                Alert::success('Success', 'Anda Berhasil Login');
                 return redirect()->route('home');
             }
         }else{
-            return redirect()->route('login')
-                ->with('error','Email Address And Password Are Wrong.');
+            Alert::error('Error', 'Username atau Password Salah!');
+            return redirect()->route('login');
         }
     }
 }

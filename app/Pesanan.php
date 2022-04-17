@@ -12,7 +12,7 @@ class Pesanan extends Model
     protected $table = 'pesanan';
     protected $primaryKey = 'id';
     protected $fillable = [
-        'produk_id','pelangan_id','invoice_id','qty','total_harga','status','date'
+        'produk_id','pelanggan_id','invoice_id','qty','total_harga','status','date'
     ];
 
     public function produk()

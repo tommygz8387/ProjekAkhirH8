@@ -5,7 +5,7 @@
 @endsection
 
 @section('title')
-    Tambah Produk
+    Edit Produk
 @endsection
 
 @section('content')
@@ -14,26 +14,26 @@
             <div class="col-md-12 grid-margin">
                 <div class="d-flex justify-content-between align-items-center">
                     <div>
-                        <h4 class="font-weight-bold mb-0"> Tambah Produk</h4>
+                        <h4 class="font-weight-bold mb-0"> Edit Produk</h4>
                     </div>
                 </div>
             </div>
         </div>
-        <form method="POST" action="{{ route('produk.store') }}" enctype="multipart/form-data" class="forms-sample">
+        <form method="POST" action="{{ route('produk.update',['id' => $edit->id]) }}" enctype="multipart/form-data" class="forms-sample">
             @csrf
             <div class="row">
                 <div class="col-md-8 grid-margin">
                     <div class="card">
                         <div class="card-body">
-                            <h4 class="card-title">Tambah Produk</h4>
+                            <h4 class="card-title">Edit Produk</h4>
                             <form class="forms-sample">
                                 <div class="form-group">
                                     <label for="namaproduk">Nama Produk</label>
-                                    <input type="text" class="form-control" id="namaproduk" placeholder="Nama Produk" name="nama_produk" required>
+                                    <input type="text" class="form-control" id="namaproduk" placeholder="Nama Produk" name="nama_produk" value="{{ $edit->nama_produk }}" required>
                                 </div>
                                 <div class="form-group">
                                     <label for="summernote">Deskripsi</label>
-                                    <textarea id="summernote" name="deskripsi" required></textarea>
+                                    <textarea id="summernote" name="deskripsi">{{ $edit->deskripsi }}</textarea>
                                 </div>
                             </form>
                         </div>
@@ -73,13 +73,13 @@
                                         <span class="input-group-text">Rp.</span>
                                     </div>
                                     <input type="number" class="form-control" id="harga" placeholder="Harga"
-                                        aria-label="Harga" name="harga" required>
+                                        aria-label="Harga" name="harga" value="{{ $edit->harga }}" required>
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label for="berat">Berat</label>
-                                <input type="number" class="form-control" id="berat" placeholder="Berat" name="berat" required>
+                                <input type="number" class="form-control" id="berat" placeholder="Berat" name="berat" value="{{ $edit->berat }}" required>
                             </div>
 
                             <div class="form-group">

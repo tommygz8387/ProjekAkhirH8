@@ -3,16 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use RealRashid\SweetAlert\Facades\Alert;
-use App\Pesanan;
 use App\Pelanggan;
-use App\Produk;
-use Carbon\Carbon;
-use App\Imports\PesananImport;
-use Maatwebsite\Excel\Facades\Excel;
+use RealRashid\SweetAlert\Facades\Alert;
 
-
-class pesananController extends Controller
+class pelangganController extends Controller
 {
     public function __construct()
     {
@@ -26,9 +20,8 @@ class pesananController extends Controller
     public function index()
     {
         //
-        $data['dataPesanan'] = Pesanan::orderBy('created_at', 'DESC')->get();
-        // dd($data);
-        return view('pesanan.index',$data);
+        $data['dataPelanggan'] = Pelanggan::orderBy('created_at', 'DESC')->get();
+        return view('pelanggan.create',$data);
     }
 
     /**
@@ -39,9 +32,6 @@ class pesananController extends Controller
     public function create()
     {
         //
-        $data['dataProduk'] = Produk::get();
-        $data['dataPelanggan'] = Pelanggan::get();
-        return view('pesanan.create',$data);
     }
 
     /**
@@ -53,44 +43,13 @@ class pesananController extends Controller
     public function store(Request $request)
     {
         //
-        $today = Carbon::now('GMT+7');
-        $random = random_int(10000, 99999);
-        $invoice = $today->year . '/' . $today->month . '/' . $today->day . '/' . $random;
-
-        $produk = Produk::find($request->produk_id);
-        $total = $request->qty * $produk->harga;
-
-        
-        $store = Pesanan::create(array_merge($request->all(), ['invoice_id' => $invoice,'total_harga'=>$total]));
-        // dd($request->all());
+        $store = Pelanggan::create($request->all());
         if(!$store){
             Alert::error('error','Data Added Failed');
-            return redirect()->route('pesanan.index');
+            return redirect()->route('pelanggan.index');
         } else {
             Alert::success('success','Data Added successfully');
-            return redirect()->route('pesanan.index');
-        }
-    }
-
-    public function import(Request $request)
-    {
-        //
-        $this->validate($request,[
-            'file' => 'required|mimes:csv,xls,xlsx'
-        ]);
-
-        $file = $request->file('file');
-        $namafile = rand().'_'.$file->getClientOriginalName();
-        $file->move('DataPesanan', $namafile);
-
-        $imp = Excel::import(new PesananImport, public_path('/DataPesanan/'.$namafile));
-
-        if(!$imp){
-            Alert::error('error','Import Data Failed');
-            return redirect()->route('pesanan.index');
-        } else {
-            Alert::success('success','Import Data Success');
-            return redirect()->route('pesanan.index');
+            return redirect()->route('pelanggan.index');
         }
     }
 
@@ -114,14 +73,13 @@ class pesananController extends Controller
     public function edit($id)
     {
         //
-        $data['dataProduk'] = Produk::get();
-        $data['dataPelanggan'] = Pelanggan::get();
-        $data['edit'] = Pesanan::find($id);
+        $data['dataPelanggan'] = Pelanggan::orderBy('created_at', 'DESC')->get();
+        $data['edit'] = Pelanggan::find($id);
         if(!$data['edit']){
             Alert::error('error','Data Not Found!');
-            return redirect()->route('pelanggan.index');
+            return redirect()->route('pelanggan.create');
         }
-        return view('pesanan.edit',$data);
+        return view('pelanggan.edit',$data);
     }
 
     /**
@@ -134,14 +92,14 @@ class pesananController extends Controller
     public function update(Request $request, $id)
     {
         //
-        $update = Pesanan::updateOrCreate(['id' => $id], $request->all());
+        $update = Pelanggan::updateOrCreate(['id' => $id], $request->all());
 
         if (!$update) {
             Alert::error('error','Data Not Found!');
             return redirect()->back();
         }else{
             Alert::success('success','Data Updated Successfully');
-            return redirect()->route('pesanan.index');
+            return redirect()->route('pelanggan.index');
         }
     }
 
@@ -154,21 +112,21 @@ class pesananController extends Controller
     public function destroy($id)
     {
         //
-        $destroy = Pesanan::find($id);
+        $destroy = Pelanggan::find($id);
 
         // cek data
         if (!$destroy) {
             Alert::error('error','Data Not Found!');
-            return redirect()->route('pesanan.index');
+            return redirect()->route('pelanggan.index');
         }
 
         $destroy->delete();
         if (!$destroy) {
             Alert::error('error','Data Cannot Be Deleted!');
-            return redirect()->route('pesanan.index');
+            return redirect()->route('pelanggan.index');
         }else{
             Alert::success('success','Data Has Been Deleted!');
-            return redirect()->route('pesanan.index');
+            return redirect()->route('pelanggan.index');
         }
     }
 }

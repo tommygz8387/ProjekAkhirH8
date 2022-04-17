@@ -6,6 +6,13 @@
 
 @section('css')
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css">
+    <style>
+        .rounded {
+            width: 4rem !important;
+            height: 4rem !important;
+        }
+
+    </style>
 @endsection
 
 @section('content')
@@ -36,9 +43,7 @@
                                     <tr>
                                         <th>Foto</th>
                                         <th>Produk</th>
-                                        <th>Deskripsi</th>
                                         <th>Harga</th>
-                                        <th>Berat</th>
                                         <th>Created At</th>
                                         <th>Status</th>
                                         <th>Aksi</th>
@@ -46,21 +51,35 @@
                                 </thead>
                                 <tbody>
                                     @foreach ($dataProduk as $produk)
-                                    
-                                    <tr>
-                                        <td>{{ $produk->foto_produk }}</td>
-                                        <td>{{ $produk->nama_produk }}</td>
-                                        <td>{{ $produk->deskripsi }}</td>
-                                        <td>{{ $produk->harga }}</td>
-                                        <td>{{ $produk->berat }}</td>
-                                        <td>{{ $produk->created_at->toDateString() }}</td>
-                                        <td>{{ $produk->status }}</td>
-                                        <td>
-                                            <a href="#" class="btn btn-warning text-light ms-0"><i class="ti-pencil-alt"></i></a>
-                                            <a href="#" class="btn btn-danger text-light me-0"><i class="ti-trash"></i></a>
-                                        </td>
-                                    </tr>
-
+                                        <tr>
+                                            <td><img src="{{ asset('/foto_produk') }}/{{ $produk->foto_produk }}"
+                                                    alt="foto produk" class="rounded"></td>
+                                            <td><strong>
+                                                    {{ $produk->nama_produk }}<br><br>
+                                                    Kategori : <span
+                                                        class="badge rounded-pill bg-info">{{ $produk->kategori->nama_kategori }}</span><br><br>
+                                                    Berat : <span
+                                                        class="badge rounded-pill bg-info">{{ $produk->berat }}gr</span><br><br>
+                                                </strong></td>
+                                            <td>Rp. {{ number_format($produk->harga) }}</td>
+                                            <td>{{ $produk->created_at->toDateString() }}</td>
+                                            <td>
+                                                @if ($produk->status == 'Draft')
+                                                    <span class="badge rounded-pill bg-warning">{{ $produk->status }}</span>
+                                                @else
+                                                    <span
+                                                        class="badge rounded-pill bg-success">{{ $produk->status }}</span>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                <a href="{{ route('produk.edit', ['id' => $produk->id]) }}"
+                                                    class="btn btn-warning text-light ms-0"><i
+                                                        class="ti-pencil-alt"></i></a>
+                                                <a href="{{ route('produk.delete', ['id' => $produk->id]) }}"
+                                                    class="btn btn-danger text-light me-0"><i
+                                                        class="ti-trash"></i></a>
+                                            </td>
+                                        </tr>
                                     @endforeach
                                 </tbody>
                             </table>

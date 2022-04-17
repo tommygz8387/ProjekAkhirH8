@@ -50,8 +50,7 @@
             </a>
             <div class="collapse" id="auth">
                 <ul class="nav flex-column sub-menu">
-                    <li class="nav-item"> <a class="nav-link" > Data Pelanggan </a></li>
-                    <li class="nav-item"> <a class="nav-link" > Pengaturan Akun </a></li>
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('pelanggan.index') }}"> Data Pelanggan </a></li>
                 </ul>
             </div>
         </li>

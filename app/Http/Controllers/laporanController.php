@@ -3,9 +3,14 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Pesanan;
 
 class laporanController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -14,6 +19,8 @@ class laporanController extends Controller
     public function index()
     {
         //
+        $data['dataPesanan'] = Pesanan::orderBy('created_at', 'DESC')->get();
+        return view('laporan.index',$data);
     }
 
     /**
